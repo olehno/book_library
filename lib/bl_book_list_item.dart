@@ -36,6 +36,42 @@ class BLBookListItem extends StatelessWidget {
                   color: AppColors.primaryOnLight,
                 ),
               ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  const Icon(
+                    Icons.star_border,
+                    color: AppColors.primary,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    "(49)",
+                    style: AppTypography.caprion1SemiBold
+                        .copyWith(color: AppColors.primary),
+                  ),
+                ],
+              )
             ],
           )
         ],

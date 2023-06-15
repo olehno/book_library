@@ -17,7 +17,7 @@ class BookListPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Start book search...",
@@ -27,24 +27,24 @@ class BookListPage extends StatelessWidget {
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: AppColors.onPrimaryLight,
 
                     )
                   ),
                 ),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Text(
                 "Book search",
                 style: AppTypography.headline1Bold.copyWith(
                   color: AppColors.primaryOnLight,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: ListView.separated(
-                  itemBuilder: (context, index) => BLBookListItem(),
+                  itemBuilder: (context, index) => const BLBookListItem(),
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 16),
                   itemCount: 30,
@@ -53,6 +53,12 @@ class BookListPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        // TODO: find filled heart
+        child: Icon(Icons.heart_broken),
+        backgroundColor: AppColors.primary,
       ),
     );
   }
