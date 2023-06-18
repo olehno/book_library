@@ -1,9 +1,12 @@
+import 'package:book_library/book_info.dart';
 import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class BLBookListItem extends StatelessWidget {
-  const BLBookListItem({super.key});
+  const BLBookListItem({super.key, required this.books});
+
+  final BookInfo books;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class BLBookListItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg",
+              books.imageUrl,
               height: 84,
               width: 77,
               fit: BoxFit.cover,
@@ -25,13 +28,13 @@ class BLBookListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8.5),
-              Text("Author",
+              Text(books.author,
                   style: AppTypography.subtitle1Bold.copyWith(
                     color: AppColors.onPrimaryLight,
                   )),
               const SizedBox(height: 4),
               Text(
-                "Name of the book",
+                books.bookName,
                 style: AppTypography.caption2Regular.copyWith(
                   color: AppColors.primaryOnLight,
                 ),

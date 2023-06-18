@@ -5,9 +5,7 @@ class BookInfo {
   final String imageUrl;
   final String rating;
 
-
-  const BookInfo
-      ({
+  const BookInfo({
     required this.id,
     required this.author,
     required this.bookName,
