@@ -1,12 +1,55 @@
+import 'dart:async';
+
 import 'package:book_library/bl_book_detail.dart';
 import 'package:book_library/bl_book_list_item.dart';
-import 'package:book_library/books.dart';
+import 'package:book_library/book_info.dart';
+import 'package:book_library/books_repository.dart';
 import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BookListPage extends StatelessWidget {
+class BookListPage extends StatefulWidget {
   const BookListPage({super.key});
+
+  @override
+  State<BookListPage> createState() => _BookListPageState();
+}
+
+class _BookListPageState extends State<BookListPage> {
+  late final BooksRepository booksRepository;
+  Future<List<BookInfo>>? booksFuture;
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debouncer;
+
+  void _debounceSearch() {
+    if (_debouncer != null) {
+      _debouncer?.cancel();
+    }
+    _debouncer = Timer(const Duration(seconds: 1), () {
+      final query = _searchController.text;
+      setState(() {
+        booksFuture = booksRepository.search(query);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    booksRepository = context.read();
+    booksFuture = booksRepository.getBooks();
+    _searchController.addListener(() {
+      _debounceSearch();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _debouncer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +64,7 @@ class BookListPage extends StatelessWidget {
             children: [
               const SizedBox(height: 24),
               TextFormField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   hintText: "Start book search...",
                   hintStyle: AppTypography.subtitle2Regular.copyWith(
@@ -43,22 +87,40 @@ class BookListPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: ListView.separated(
-                  itemCount: books.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  BLBookDetail(book: books[index]),
-                            ),
-                          );
-                        },
-                        child: BLBookListItem(books: books[index]));
+                child: FutureBuilder<List<BookInfo>>(
+                  future: booksFuture,
+                  builder: (context, snapShot) {
+                    if (snapShot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final books = snapShot.data ?? [];
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: books.length,
+                            itemBuilder: (context, index) {
+                              final item = books[index];
+                              return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BLBookDetail(book: item),
+                                      ),
+                                    );
+                                  },
+                                  child: BLBookListItem(books: item));
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 16),
+                          ),
+                        ),
+                      ],
+                    );
                   },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
                 ),
               ),
             ],
