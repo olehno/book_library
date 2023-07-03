@@ -1,7 +1,7 @@
-import 'package:book_library/book_info.dart';
+import 'package:book_library/books_response.dart';
 
 abstract class BooksRepository {
-  Future<List<BookInfo>> getBooks();
+  Future<List<BookResponse>> getBooks();
 
-  Future<List<BookInfo>> search(String query);
+  // Future<List<BookInfo>> search(String query);
 }

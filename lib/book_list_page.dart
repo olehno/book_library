@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:book_library/bl_book_detail.dart';
 import 'package:book_library/bl_book_list_item.dart';
-import 'package:book_library/book_info.dart';
 import 'package:book_library/books_repository.dart';
+import 'package:book_library/books_response.dart';
 import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
@@ -17,39 +17,40 @@ class BookListPage extends StatefulWidget {
 }
 
 class _BookListPageState extends State<BookListPage> {
-  late final BooksRepository booksRepository;
-  Future<List<BookInfo>>? booksFuture;
-  final TextEditingController _searchController = TextEditingController();
-  Timer? _debouncer;
+  late final BooksRepository _booksRepository;
+  late final Future<List<BookResponse>>? _booksFuture;
 
-  void _debounceSearch() {
-    if (_debouncer != null) {
-      _debouncer?.cancel();
-    }
-    _debouncer = Timer(const Duration(seconds: 1), () {
-      final query = _searchController.text;
-      setState(() {
-        booksFuture = booksRepository.search(query);
-      });
-    });
-  }
+  // final TextEditingController _searchController = TextEditingController();
+  // Timer? _debouncer;
+
+  // void _debounceSearch() {
+  //   if (_debouncer != null) {
+  //     _debouncer?.cancel();
+  //   }
+  //   _debouncer = Timer(const Duration(seconds: 1), () {
+  //     final query = _searchController.text;
+  //     setState(() {
+  //       booksFuture = booksRepository.search(query);
+  //     });
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    booksRepository = context.read();
-    booksFuture = booksRepository.getBooks();
-    _searchController.addListener(() {
-      _debounceSearch();
-    });
+    _booksRepository = context.read();
+    _booksFuture = _booksRepository.getBooks();
+    // _searchController.addListener(() {
+    //   _debounceSearch();
+    // });
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _debouncer?.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _searchController.dispose();
+  //   _debouncer?.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _BookListPageState extends State<BookListPage> {
             children: [
               const SizedBox(height: 24),
               TextFormField(
-                controller: _searchController,
+                // controller: _searchController,
                 decoration: InputDecoration(
                   hintText: "Start book search...",
                   hintStyle: AppTypography.subtitle2Regular.copyWith(
@@ -72,10 +73,11 @@ class _BookListPageState extends State<BookListPage> {
                   ),
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: const BorderSide(
-                        color: AppColors.onPrimaryLight,
-                      )),
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: AppColors.onPrimaryLight,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 32),
@@ -87,8 +89,8 @@ class _BookListPageState extends State<BookListPage> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: FutureBuilder<List<BookInfo>>(
-                  future: booksFuture,
+                child: FutureBuilder<List<BookResponse>>(
+                  future: _booksFuture,
                   builder: (context, snapShot) {
                     if (snapShot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -96,6 +98,7 @@ class _BookListPageState extends State<BookListPage> {
                       );
                     }
                     final books = snapShot.data ?? [];
+                    print("Future: $books");
                     return Column(
                       children: [
                         Expanded(

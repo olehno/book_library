@@ -1,12 +1,18 @@
-import 'package:book_library/book_info.dart';
+import 'package:book_library/books_response.dart';
 import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
 
-class BLBookListItem extends StatelessWidget {
+class BLBookListItem extends StatefulWidget {
   const BLBookListItem({super.key, required this.books});
 
-  final BookInfo books;
+  final BookResponse books;
+
+  @override
+  State<BLBookListItem> createState() => _BLBookListItemState();
+}
+
+class _BLBookListItemState extends State<BLBookListItem> {
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +22,9 @@ class BLBookListItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              books.imageUrl,
+            child:
+            Image.network(
+              widget.books.volumeInfo?.imageLinks?.smallThumbnail ?? "",
               height: 84,
               width: 77,
               fit: BoxFit.cover,
@@ -28,13 +35,16 @@ class BLBookListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8.5),
-              Text(books.author,
+              Text(widget.books.volumeInfo?.authors?.join(', ') ?? '',
+                  overflow: TextOverflow.ellipsis,
                   style: AppTypography.subtitle1Bold.copyWith(
                     color: AppColors.onPrimaryLight,
                   )),
               const SizedBox(height: 4),
               Text(
-                books.bookName,
+                widget.books.volumeInfo?.title ?? "",
+                overflow: TextOverflow.ellipsis,
+
                 style: AppTypography.caption2Regular.copyWith(
                   color: AppColors.primaryOnLight,
                 ),
