@@ -1,9 +1,20 @@
+import 'package:book_library/books_response.dart';
 import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_native/flutter_rating_native.dart';
 
-class BLBookListItem extends StatelessWidget {
-  const BLBookListItem({super.key});
+class BLBookListItem extends StatefulWidget {
+  const BLBookListItem({super.key, required this.book});
+
+  final BookResponse book;
+
+  @override
+  State<BLBookListItem> createState() => _BLBookListItemState();
+}
+
+class _BLBookListItemState extends State<BLBookListItem> {
+  RegExp regex = RegExp(r'([.]*0)(?!.*\d)');
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +24,9 @@ class BLBookListItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg",
+            child:
+            Image.network(
+              widget.book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
               height: 84,
               width: 77,
               fit: BoxFit.cover,
@@ -25,17 +37,40 @@ class BLBookListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8.5),
-              Text("Author",
+              Text(widget.book.volumeInfo?.authors?.join(', ') ?? '',
+                  overflow: TextOverflow.ellipsis,
                   style: AppTypography.subtitle1Bold.copyWith(
                     color: AppColors.onPrimaryLight,
                   )),
               const SizedBox(height: 4),
               Text(
-                "Name of the book",
+                widget.book.volumeInfo?.title ?? "",
+                overflow: TextOverflow.ellipsis,
+
                 style: AppTypography.caption2Regular.copyWith(
                   color: AppColors.primaryOnLight,
                 ),
               ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  FlutterRating(
+                    rating: widget.book.volumeInfo?.averageRating ?? 0,
+                    starCount: 5,
+                    borderColor: AppColors.primary,
+                    color: AppColors.primary,
+                    allowHalfRating: true,
+                    size: 16,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    widget.book.volumeInfo?.ratingsCount.toString().replaceAll(regex, '') ?? "",
+                    style: AppTypography.caprion1SemiBold
+                        .copyWith(color: AppColors.primary),
+                  ),
+                ],
+              )
             ],
           )
         ],

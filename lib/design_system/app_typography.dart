@@ -25,6 +25,24 @@ class AppTypography {
     height: 1.2,
     fontFamily: "KohSantepheap",
   );
+  static const body1SemiBold = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+    fontFamily: "KohSantepheap",
+  );
+  static const body2Regular = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    height: 1.2,
+    fontFamily: "KohSantepheap",
+  );
+  static const caprion1SemiBold = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+    fontFamily: "KohSantepheap",
+  );
   static const caption2Regular = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,
