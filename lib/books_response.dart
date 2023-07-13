@@ -33,6 +33,7 @@ class BookVolumeInfoResponse extends Equatable {
   final String? publishedDate;
   final int? pageCount;
   final double? averageRating;
+  final double? ratingsCount;
   final String? description;
   final BookImageLinksResponse? imageLinks;
 
@@ -42,6 +43,7 @@ class BookVolumeInfoResponse extends Equatable {
     required this.publishedDate,
     required this.pageCount,
     required this.averageRating,
+    required this.ratingsCount,
     required this.description,
     required this.imageLinks,
   });
@@ -58,6 +60,7 @@ class BookVolumeInfoResponse extends Equatable {
         pageCount,
         publishedDate,
         averageRating,
+        ratingsCount,
       ];
 }
 

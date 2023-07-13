@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:book_library/bl_book_detail.dart';
 import 'package:book_library/bl_book_list_item.dart';
+import 'package:book_library/book_detail_page.dart';
 import 'package:book_library/books_repository.dart';
 import 'package:book_library/books_response.dart';
 import 'package:book_library/design_system/app_colors.dart';
@@ -108,14 +108,9 @@ class _BookListPageState extends State<BookListPage> {
                               final item = books[index];
                               return GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BLBookDetail(book: item),
-                                      ),
-                                    );
+                                    _onOpenDetailsPage(item);
                                   },
-                                  child: BLBookListItem(books: item));
+                                  child: BLBookListItem(book: item));
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 16),
@@ -134,6 +129,14 @@ class _BookListPageState extends State<BookListPage> {
         onPressed: () {},
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.favorite),
+      ),
+    );
+  }
+
+  void _onOpenDetailsPage(BookResponse item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(book: item),
       ),
     );
   }

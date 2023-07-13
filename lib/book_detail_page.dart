@@ -4,21 +4,24 @@ import 'package:book_library/design_system/app_colors.dart';
 import 'package:book_library/design_system/app_typography.dart';
 import 'package:flutter/material.dart';
 
-class BLBookDetail extends StatefulWidget {
-  const BLBookDetail({super.key, required this.book});
+class BookDetailPage extends StatefulWidget {
+  const BookDetailPage({super.key, required this.book});
 
   final BookResponse book;
 
   @override
-  State<BLBookDetail> createState() => _BLBookDetailState();
+  State<BookDetailPage> createState() => _BookDetailPage();
 }
 
-class _BLBookDetailState extends State<BLBookDetail> {
+class _BookDetailPage extends State<BookDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.light,
         appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: AppColors.primaryOnLight,
+          ),
           centerTitle: true,
           title: Text(
             "Book Details",
